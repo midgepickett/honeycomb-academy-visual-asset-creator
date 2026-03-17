@@ -230,3 +230,135 @@ Use for: growth, learning, positive outcomes
 Sun:
 https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Academy-Sun.png
 Use for: clarity, insight, illumination
+
+### Logos
+
+Logo — Light, Large, No Padding:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Light-Large-NoPadding.png
+Use for: full wordmark on dark/Cobalt backgrounds, slide headers, large placements
+
+Logo — Light, Large, Padded:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Light-Large-Padding.png
+Use for: full wordmark on dark backgrounds where built-in spacing is needed
+
+Logo — Light, Small, No Padding:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Light-Small-NoPadding.png
+Use for: compact white wordmark in nav bars, footers, tight layouts on dark backgrounds
+
+Logo — Light, Small, Padded:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Light-Small-Padding.png
+Use for: small white wordmark with spacing, inline placements on dark backgrounds
+
+Logo — Dark, Large, No Padding:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Dark-Large-NoPadding.png
+Use for: full wordmark on light backgrounds, print, co-branded layouts
+
+Logo — Dark, Large, Padded:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Dark-Large-Padding.png
+Use for: full wordmark on light backgrounds with built-in padding
+
+Logo — Dark, Small, No Padding:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Dark-Small-NoPadding.png
+Use for: compact dark wordmark in headers or footers on light backgrounds
+
+Logo — Dark, Small, Padded:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Dark-Small-Padding.png
+Use for: small dark wordmark with spacing on light backgrounds
+
+Logo — Light + Dark, Large, No Padding:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Light_Dark-Large-NoPadding.png
+Use for: full-color wordmark (light symbol + dark text), preferred for neutral/white backgrounds
+
+Logo — Light + Dark, Large, Padded:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logo-Light_Dark-Large-Padding.png
+Use for: full-color wordmark with built-in padding on neutral/white backgrounds
+
+Favicon:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Favicon.png
+Use for: browser tab icons, app icons, small square logo placements
+
+### Logomarks
+
+Logomark — Light:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logmark-Light.png
+Use for: symbol-only white mark on dark backgrounds, watermarks, compact brand presence
+
+Logomark — Dark:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logomark-Dark.png
+Use for: symbol-only dark mark on light backgrounds
+
+Logomark — Grayscale:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_ACDMY-Logomark-Grayscale.png
+Use for: neutral/monochrome contexts, print, desaturated overlays
+
+### Cover Slides
+
+Cover — Google Slides 01:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/Cover-Gslides-01.png
+Use for: slide deck cover variant 1
+
+Cover — Google Slides 02:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/Cover-Gslides-02.png
+Use for: slide deck cover variant 2
+
+Cover — Google Slides 03:
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/Cover-Gslides-03.png
+Use for: slide deck cover variant 3
+
+### Telemetry Data Patterns
+
+These are wide horizontal decorators showing dashed rows with colored data blocks — use as
+background texture, section dividers, or telemetry data visualization motifs.
+
+Telemetry Data v1 — Pacific blue blocks, left-to-right, white dashed lines (dark bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Telemetry_Data_v1.png
+Use for: decorative telemetry rows on dark/Cobalt backgrounds
+
+Telemetry Data v1 alt — Pacific blue blocks, dark dashed lines (light bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Telemetry_Data_v1_1.png
+Use for: same pattern adapted for lighter card or panel backgrounds
+
+Telemetry Data v2 — Denim blue blocks, white dashed lines (dark bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Telemetry_Data_v2.png
+Use for: subtle, low-contrast telemetry texture on dark backgrounds
+
+Telemetry Data v2 alt — Denim blue blocks, dark dashed lines (light bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Telemetry_Data_v2_1.png
+Use for: subtle telemetry texture on lighter backgrounds
+
+Telemetry Data v3 — Honey/amber blocks, white dashed lines (dark bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Telemetry_Data_v3.png
+Use for: highlighted or accented telemetry pattern, callout sections, amber-themed content
+
+Telemetry Data v3 alt — Honey/amber blocks, dark dashed lines (light bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Telemetry_Data_v3_1.png
+Use for: amber telemetry texture on lighter backgrounds
+
+### Layout Connectors
+
+These are thin horizontal or circular line elements for connecting diagram nodes,
+separating sections, or indicating flow.
+
+Arrow — white (dark bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Academy_Arrow.png
+Use for: directional flow between elements on dark/Cobalt backgrounds
+
+Arrow — dark (light bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Academy_Arrow_1.png
+Use for: directional flow between elements on lighter card or panel backgrounds
+
+Bee Line — dark dashed (dark bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Academy_Bee_Line.png
+Use for: dashed connector or divider line on dark backgrounds
+
+Bee Line — light dashed (dark bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Academy_Bee_Line_1.png
+Use for: lighter dashed connector on dark backgrounds, secondary flow lines
+
+Circular Arrow — white (dark bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Academy_Circular_Arrow.png
+Use for: feedback loops, iteration cycles, recurring processes on dark backgrounds
+
+Circular Arrow — dark (light bg):
+https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Academy_Circular_Arrow_1.png
+Use for: feedback loops, iteration cycles on lighter backgrounds
