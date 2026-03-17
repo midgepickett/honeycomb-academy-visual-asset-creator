@@ -1,6 +1,6 @@
-# Honeycomb Academy — Brand & Design Skill
+# Honeycomb Academy — Brand & Design Guidelines
 
-## When to use this skill
+## When to use this file
 Read this file before generating any visual output — comics, slides,
 diagrams, layouts, UI mockups, or components. Apply everything below
 automatically without prompting the user to confirm.
