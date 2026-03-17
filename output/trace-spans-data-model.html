@@ -13,6 +13,7 @@
       background: #f0f4f8;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       padding: 40px;
       min-height: 100vh;
     }
@@ -20,7 +21,7 @@
     .diagram {
       background: #0278CD;
       border-radius: 16px;
-      padding: 32px;
+      padding: 24px;
       width: 1200px;
       min-width: 1200px;
     }
@@ -29,7 +30,7 @@
     .diagram-header {
       display: flex;
       align-items: center;
-      margin-bottom: 28px;
+      margin-bottom: 16px;
     }
 
     .header-text { flex: 1; }
@@ -59,11 +60,11 @@
     .trace-bar {
       background: #F8AD00;
       border-radius: 10px;
-      padding: 14px 20px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 36px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .trace-bar-bee {
@@ -103,11 +104,11 @@
     .span-card {
       background: #01487B;
       border-radius: 10px;
-      padding: 0 20px;
-      height: 80px;
+      padding: 0 16px;
+      height: 64px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
     .span-card.grandchild-card {
@@ -164,8 +165,8 @@
     .tree-wrapper {
       position: relative;
       width: 100%;
-      margin-bottom: 36px;
-      height: 334px;
+      margin-bottom: 20px;
+      height: 264px;
     }
 
     .tree-connectors {
@@ -173,7 +174,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 334px;
+      height: 264px;
       pointer-events: none;
       overflow: visible;
     }
@@ -187,8 +188,8 @@
     .metadata-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 0;
     }
 
     .meta-card {
@@ -198,9 +199,9 @@
     }
 
     .meta-card-body {
-      padding: 18px 20px 14px;
+      padding: 12px 16px 10px;
       display: flex;
-      gap: 16px;
+      gap: 12px;
       align-items: flex-start;
     }
 
@@ -245,6 +246,7 @@
       font-weight: 500;
       font-size: 10px;
       color: #93D1F2;
+      text-align: center;
     }
 
     /* ── Telemetry strip ──────────────────────────── */
@@ -286,37 +288,37 @@
     </div>
 
     <!--
-      Tree coordinate plan (1136px wide = 1200px container - 64px padding):
-        Root:              top=0,   left=0,   width=1136, height=80 → bottom=80,  center-x=568
-        gap (connectors):  80–128  (48px)    junction at y=104
-        inventory-service: top=128, left=0,   width=538,  height=80 → bottom=208, center-x=269
-        payment-service:   top=128, left=598, width=538,  height=80 → bottom=208, center-x=867
-        gap (connectors):  208–244 (36px)    grandchild connector at x=867
-        postgres:          top=244, left=598, width=538,  height=80 → bottom=324, center-x=867
-        Total height: 324 + 10 buffer = 334
+      Tree coordinate plan (1152px wide = 1200px container - 48px padding):
+        Root:              top=0,   left=0,   width=1152, height=64 → bottom=64,  center-x=576
+        gap (connectors):  64–100  (36px)    junction at y=82
+        inventory-service: top=100, left=0,   width=546,  height=64 → bottom=164, center-x=273
+        payment-service:   top=100, left=606, width=546,  height=64 → bottom=164, center-x=879
+        gap (connectors):  164–192 (28px)    grandchild connector at x=879
+        postgres:          top=192, left=606, width=546,  height=64 → bottom=256, center-x=879
+        Total height: 256 + 8 buffer = 264
     -->
     <div class="tree-wrapper">
 
       <svg
         class="tree-connectors"
-        viewBox="0 0 1136 334"
+        viewBox="0 0 1152 264"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <!-- Root bottom → junction -->
-        <line x1="568" y1="80" x2="568" y2="104" stroke="#93D1F2" stroke-width="2"/>
+        <line x1="576" y1="64" x2="576" y2="82" stroke="#93D1F2" stroke-width="2"/>
         <!-- Horizontal branch: inventory center ↔ payment center -->
-        <line x1="269" y1="104" x2="867" y2="104" stroke="#93D1F2" stroke-width="2"/>
+        <line x1="273" y1="82" x2="879" y2="82" stroke="#93D1F2" stroke-width="2"/>
         <!-- Junction → inventory top -->
-        <line x1="269" y1="104" x2="269" y2="128" stroke="#93D1F2" stroke-width="2"/>
+        <line x1="273" y1="82" x2="273" y2="100" stroke="#93D1F2" stroke-width="2"/>
         <!-- Junction → payment top -->
-        <line x1="867" y1="104" x2="867" y2="128" stroke="#93D1F2" stroke-width="2"/>
+        <line x1="879" y1="82" x2="879" y2="100" stroke="#93D1F2" stroke-width="2"/>
         <!-- Payment bottom → postgres top -->
-        <line x1="867" y1="208" x2="867" y2="244" stroke="#93D1F2" stroke-width="2"/>
+        <line x1="879" y1="164" x2="879" y2="192" stroke="#93D1F2" stroke-width="2"/>
         <!-- Junction dots -->
-        <circle cx="269" cy="104" r="3" fill="#93D1F2"/>
-        <circle cx="867" cy="104" r="3" fill="#93D1F2"/>
-        <circle cx="867" cy="208" r="3" fill="#93D1F2"/>
+        <circle cx="273" cy="82" r="3" fill="#93D1F2"/>
+        <circle cx="879" cy="82" r="3" fill="#93D1F2"/>
+        <circle cx="879" cy="164" r="3" fill="#93D1F2"/>
       </svg>
 
       <!-- Root span -->
@@ -332,7 +334,7 @@
       </div>
 
       <!-- inventory-service -->
-      <div class="tree-node" style="top: 128px; left: 0; width: 538px;">
+      <div class="tree-node" style="top: 100px; left: 0; width: 546px;">
         <div class="span-card">
           <span class="span-tag">Span</span>
           <div class="span-info">
@@ -343,7 +345,7 @@
       </div>
 
       <!-- payment-service -->
-      <div class="tree-node" style="top: 128px; left: 598px; width: 538px;">
+      <div class="tree-node" style="top: 100px; left: 606px; width: 546px;">
         <div class="span-card">
           <span class="span-tag">Span</span>
           <div class="span-info">
@@ -354,7 +356,7 @@
       </div>
 
       <!-- postgres (grandchild) -->
-      <div class="tree-node" style="top: 244px; left: 598px; width: 538px;">
+      <div class="tree-node" style="top: 192px; left: 606px; width: 546px;">
         <div class="span-card grandchild-card">
           <span class="span-tag">Span</span>
           <div class="span-info">
@@ -401,14 +403,6 @@
         <div class="meta-caption">Separates data by deployment context — production, staging, dev</div>
       </div>
 
-    </div>
-
-    <!-- Telemetry strip -->
-    <div class="telemetry-strip">
-      <img
-        src="https://cdn.jsdelivr.net/gh/midgepickett/honeycomb-academy-assets@main/assets/HNY_Telemetry_Data_v1.png"
-        alt=""
-      />
     </div>
 
   </div>

@@ -16,6 +16,8 @@ Always:
 - Select character assets based on emotional context (see Asset Library)
 - Build all layouts as self-contained HTML files
 - Apply visual tone: flat, quiet, editorial
+- Set `align-items: flex-start` on the body flex container so diagrams don't stretch to fill the viewport
+- When exporting to PNG with puppeteer, use `el.boundingBox()` and `page.screenshot({ clip: box })` for a tight crop with no extra whitespace
 
 Never:
 - Use raw.githubusercontent.com URLs — they will not render
@@ -28,6 +30,7 @@ Never:
 - Place yellow-toned assets on Honey (#FFB000) or Amber (#F8AD00) backgrounds — they will blend in
 - Use italic text — use bold (font-weight: 500 for Roboto, 600 for Poppins) instead
 - Mix section widths within a single layout — all sections (tree, cards, strips) should share the same width
+- Omit `align-items: flex-start` on the body flex container — without it, diagrams stretch to fill the viewport height and produce blank space at the bottom
 
 ---
 
