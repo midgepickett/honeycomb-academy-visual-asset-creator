@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OTel Pipeline</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: #111820;
+    padding: 32px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .container {
+    background: #0278CD;
+    border-radius: 16px;
+    padding: 28px;
+    width: 900px;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .tag {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #FFB000;
+  }
+  .headline {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #FFFFFF;
+    line-height: 1.1;
+    margin-top: 3px;
+  }
+  .subhead {
+    font-size: 12px;
+    color: #93D1F2;
+    margin-top: 3px;
+  }
+
+  /* ── Telemetry strip ── */
+  .telemetry-strip {
+    width: 100%;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    opacity: 0.6;
+  }
+
+  /* ── Pipeline card ── */
+  .pipeline-card {
+    background: #01487B;
+    border-radius: 12px;
+    padding: 24px 20px 20px;
+    position: relative;
+  }
+
+  /* ── Nodes row ── */
+  .nodes-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    position: relative;
+  }
+
+  /* ── Connector ── */
+  .connector {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: 48px;
+    margin: 0 -4px;
+  }
+
+  .connector-track {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  .connector-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #0298EC44, #0298EC, #0298EC44);
+  }
+
+  /* Animated packets */
+  .packet {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: flow 1.8s linear infinite;
+  }
+  .packet.logs    { background: #FFFFFF; box-shadow: 0 0 4px #FFFFFF88; }
+  .packet.metrics { background: #93D1F2; box-shadow: 0 0 4px #93D1F288; }
+  .packet.traces  { background: #FFB000; box-shadow: 0 0 4px #FFB00088; }
+
+  .packet.p1 { animation-delay: 0s; }
+  .packet.p2 { animation-delay: 0.6s; }
+  .packet.p3 { animation-delay: 1.2s; }
+
+  @keyframes flow {
+    0%   { left: -4px; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { left: calc(100% + 4px); opacity: 0; }
+  }
+
+  /* ── Node ── */
+  .node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 130px;
+    flex-shrink: 0;
+  }
+
+  .node-icon-wrap {
+    background: #0160A4;
+    border-radius: 14px;
+    padding: 14px;
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #0298EC44;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .node-icon-wrap:hover {
+    border-color: #0298EC;
+  }
+
+  .node-icon-wrap img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+  }
+
+  .node-pulse {
+    position: absolute;
+    inset: -4px;
+    border-radius: 16px;
+    border: 1.5px solid #0298EC;
+    opacity: 0;
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0%   { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 0;   transform: scale(1.18); }
+  }
+
+  .node-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .node-role {
+    font-size: 10px;
+    color: #93D1F2;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .node-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .badge {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .badge-logs    { background: #0160A4; color: #FFFFFF; }
+  .badge-metrics { background: #0160A4; color: #93D1F2; }
+  .badge-traces  { background: #5A3A00; color: #FFB000; }
+  .badge-all     { background: #0278CD; color: #93D1F2; }
+
+  /* ── Signal legend ── */
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .legend-card {
+    background: #0160A4;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .legend-card img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .legend-text { flex: 1; }
+
+  .legend-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #FFFFFF;
+  }
+
+  .legend-body {
+    font-size: 10.5px;
+    color: #93D1F2;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Caption ── */
+  .caption-bar {
+    background: #25303E;
+    border-radius: 0 0 12px 12px;
+    padding: 8px 14px;
+    font-size: 10px;
+    color: #93D1F2;
+    font-style: italic;
+    margin-top: 0;
+  }
+
+  /* ── Callout ── */
+  .callout {
+    background: #F8AD00;
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .callout img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .callout-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: #25303E;
+    line-height: 1.5;
+  }
+  .callout-text strong { font-weight: 700; }
+
+  /* ── Collector detail panel ── */
+  .collector-detail {
+    background: #0278CD;
+    border-radius: 10px;
+    margin-top: 14px;
+    padding: 14px 16px;
+  }
+
+  .collector-detail-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #FFB000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .collector-stages {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .stage {
+    flex: 1;
+    background: #0160A4;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .stage-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #FFFFFF;
+  }
+
+  .stage-desc {
+    font-size: 9.5px;
+    color: #93D1F2;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  .stage-arrow {
+    width: 28px;
+    height: 16px;
+    flex-shrink: 0;
+    object-fit: contain;
+    opacity: 0.6;
+  }
+
+  /* node entrance animation */
+  .node {
+    animation: node-in 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .node:nth-child(1) { animation-delay: 0.0s; }
+  .node:nth-child(3) { animation-delay: 0.15s; }
+  .node:nth-child(5) { animation-delay: 0.3s; }
+  .node:nth-child(7) { animation-delay: 0.45s; }
+
+  @keyframes node-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="tag">Architecture</div>
+      <div class="headline">OpenTelemetry Pipeline</div>
+      <div class="subhead">How telemetry flows from your app to Honeycomb</div>
+    </div>
+    <img src="../../../assets/brand/HNY_ACDMY-Logo-Light-Small-NoPadding.png"
+         style="height:32px; object-fit:contain;" alt="Honeycomb Academy">
+  </div>
+
+  <!-- Telemetry strip -->
+  <img class="telemetry-strip"
+       src="../../../assets/decorative/HNY_Telemetry_Data_v1.svg"
+       alt="">
+
+  <!-- Pipeline card -->
+  <div class="pipeline-card">
+
+    <div class="nodes-row">
+
+      <!-- App -->
+      <div class="node">
+        <div class="node-icon-wrap">
+          <div class="node-pulse"></div>
+          <img src="../../../assets/otel/HNY_Academy_App.svg" alt="App">
+        </div>
+        <div class="node-name">Your App</div>
+        <div class="node-role">Instrumented service</div>
+        <div class="node-badges">
+          <span class="badge badge-logs">logs</span>
+          <span class="badge badge-metrics">metrics</span>
+          <span class="badge badge-traces">traces</span>
+        </div>
+      </div>
+
+      <!-- Connector: App → SDK -->
+      <div class="connector">
+        <div class="connector-track">
+          <div class="connector-line"></div>
+          <div class="packet logs p1"></div>
+          <div class="packet metrics p2"></div>
+          <div class="packet traces p3"></div>
+        </div>
+      </div>
+
+      <!-- SDK -->
+      <div class="node">
+        <div class="node-icon-wrap">
+          <div class="node-pulse" style="animation-delay:0.4s;"></div>
+          <img src="../../../assets/otel/HNY_Academy_SDK.svg" alt="SDK">
+        </div>
+        <div class="node-name">OTel SDK</div>
+        <div class="node-role">Capture &amp; context propagation</div>
+        <div class="node-badges">
+          <span class="badge badge-all">instrumentation</span>
+        </div>
+      </div>
+
+      <!-- Connector: SDK → Collector -->
+      <div class="connector">
+        <div class="connector-track">
+          <div class="connector-line"></div>
+          <div class="packet traces p1"></div>
+          <div class="packet logs p2"></div>
+          <div class="packet metrics p3"></div>
+        </div>
+      </div>
+
+      <!-- OTel Collector -->
+      <div class="node">
+        <div class="node-icon-wrap" style="width:84px; height:84px;">
+          <div class="node-pulse" style="animation-delay:0.8s; border-color:#FFB000;"></div>
+          <img src="../../../assets/otel/HNY_Academy_OTel_Collector_v2.svg"
+               style="width:52px; height:52px;" alt="Collector">
+        </div>
+        <div class="node-name">OTel Collector</div>
+        <div class="node-role">Receive · Process · Export</div>
+        <div class="node-badges">
+          <span class="badge badge-traces">pipeline</span>
+          <span class="badge badge-all">sampling</span>
+        </div>
+      </div>
+
+      <!-- Connector: Collector → Honeycomb -->
+      <div class="connector">
+        <div class="connector-track">
+          <div class="connector-line" style="background: linear-gradient(90deg, #FFB00044, #FFB000, #FFB00044);"></div>
+          <div class="packet traces p1"></div>
+          <div class="packet traces p2" style="animation-delay:0.9s;"></div>
+          <div class="packet metrics p3"></div>
+        </div>
+      </div>
+
+      <!-- Honeycomb -->
+      <div class="node">
+        <div class="node-icon-wrap" style="border-color:#FFB00066;">
+          <div class="node-pulse" style="animation-delay:1.2s; border-color:#FFB000;"></div>
+          <img src="../../../assets/otel/HNY_Academy_HNY_Datastore.svg" alt="Honeycomb">
+        </div>
+        <div class="node-name">Honeycomb</div>
+        <div class="node-role">Store · Query · Alert</div>
+        <div class="node-badges">
+          <span class="badge badge-traces">OTLP</span>
+          <span class="badge badge-all">datasets</span>
+        </div>
+      </div>
+
+    </div><!-- /nodes-row -->
+
+    <!-- Collector internals -->
+    <div class="collector-detail">
+      <div class="collector-detail-title">Collector internals</div>
+      <div class="collector-stages">
+        <div class="stage">
+          <div class="stage-name">Receivers</div>
+          <div class="stage-desc">OTLP gRPC/HTTP<br>Jaeger · Zipkin</div>
+        </div>
+        <img class="stage-arrow"
+             src="../../../assets/decorative/HNY_Academy_Arrow.svg" alt="→">
+        <div class="stage">
+          <div class="stage-name">Processors</div>
+          <div class="stage-desc">Batch · Filter<br>Tail sampling</div>
+        </div>
+        <img class="stage-arrow"
+             src="../../../assets/decorative/HNY_Academy_Arrow.svg" alt="→">
+        <div class="stage">
+          <div class="stage-name">Exporters</div>
+          <div class="stage-desc">OTLP/HTTP<br>to Honeycomb</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signal legend -->
+    <div class="legend">
+      <div class="legend-card">
+        <img src="../../../assets/icons/HNY_Academy_Logs.svg" alt="Logs">
+        <div class="legend-text">
+          <div class="legend-title">Logs</div>
+          <div class="legend-body">Structured event records with timestamps and severity</div>
+        </div>
+        <div class="legend-dot" style="background:#FFFFFF;"></div>
+      </div>
+      <div class="legend-card">
+        <img src="../../../assets/otel/HNY_Academy_Metrics.svg" alt="Metrics">
+        <div class="legend-text">
+          <div class="legend-title">Metrics</div>
+          <div class="legend-body">Numeric measurements: counters, gauges, histograms</div>
+        </div>
+        <div class="legend-dot" style="background:#93D1F2;"></div>
+      </div>
+      <div class="legend-card">
+        <img src="../../../assets/otel/HNY_Academy_Traces.svg" alt="Traces">
+        <div class="legend-text">
+          <div class="legend-title">Traces</div>
+          <div class="legend-body">Distributed request flows across services and spans</div>
+        </div>
+        <div class="legend-dot" style="background:#FFB000;"></div>
+      </div>
+    </div>
+
+  </div><!-- /pipeline-card -->
+
+  <!-- Callout -->
+  <div class="callout">
+    <img src="../../../assets/icons/HNY_Academy-Thumbs_Up.png" alt="Tip">
+    <div class="callout-text">
+      <strong>Pro tip:</strong> The Collector is optional for getting started — the OTel SDK can export directly to Honeycomb via OTLP. Add the Collector when you need tail-based sampling, multi-destination routing, or data transformation.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

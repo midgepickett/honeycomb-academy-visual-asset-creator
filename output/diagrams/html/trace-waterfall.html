@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trace Waterfall</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: #111820;
+    padding: 32px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .container {
+    background: #0278CD;
+    border-radius: 16px;
+    padding: 28px;
+    width: 860px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tag {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #FFB000;
+  }
+
+  .headline {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #FFFFFF;
+    line-height: 1.1;
+  }
+
+  .subhead {
+    font-size: 12px;
+    font-weight: 400;
+    color: #93D1F2;
+    margin-top: 2px;
+  }
+
+  .header-asset {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  }
+
+  /* Waterfall card */
+  .waterfall-card {
+    background: #01487B;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* Column headers */
+  .col-headers {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    background: #0160A4;
+    padding: 8px 16px;
+    border-bottom: 1px solid #0298EC33;
+  }
+
+  .col-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #93D1F2;
+  }
+
+  .col-label.right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Timeline ruler */
+  .timeline-ruler {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0 0 8px;
+  }
+
+  .ruler-tick {
+    font-size: 10px;
+    font-weight: 400;
+    color: #93D1F2;
+    opacity: 0.7;
+  }
+
+  /* Span rows */
+  .spans {
+    padding: 10px 0 14px;
+  }
+
+  .span-row {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    align-items: center;
+    padding: 3px 16px;
+    min-height: 32px;
+  }
+
+  .span-row:hover {
+    background: #0160A422;
+  }
+
+  .span-label {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .indent {
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .expand-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #0298EC;
+    flex-shrink: 0;
+    margin-right: 7px;
+  }
+
+  .span-name {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .span-name.service {
+    color: #93D1F2;
+    font-weight: 400;
+    font-size: 10.5px;
+  }
+
+  /* Bar track */
+  .bar-track {
+    position: relative;
+    height: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .bar-track::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    border-top: 1px dashed #0298EC33;
+  }
+
+  @keyframes bar-draw {
+    from { transform: scaleX(0); opacity: 0.4; }
+    to   { transform: scaleX(1); opacity: 1; }
+  }
+
+  .span-bar {
+    position: absolute;
+    height: 14px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    transform-origin: left center;
+    animation: bar-draw 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .span-bar .bar-label {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: #FFFFFF;
+    opacity: 0.9;
+  }
+
+  .span-duration {
+    position: absolute;
+    right: 0;
+    font-size: 10px;
+    font-weight: 400;
+    color: #FFB000;
+    white-space: nowrap;
+  }
+
+  /* Divider */
+  .span-divider {
+    border: none;
+    border-top: 1px solid #0298EC22;
+    margin: 4px 16px;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+
+  .status-ok   { background: #0160A4; color: #93D1F2; }
+  .status-err  { background: #8B2020; color: #FFB5B5; }
+  .status-slow { background: #5A3A00; color: #FFB000; }
+
+  /* Summary bar */
+  .summary-bar {
+    background: #F8AD00;
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .summary-icon {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .summary-text {
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    color: #25303E;
+    line-height: 1.5;
+  }
+
+  .summary-text strong {
+    font-weight: 700;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .stat-card {
+    background: #01487B;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #93D1F2;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .stat-value {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #FFB000;
+    line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 10px;
+    font-weight: 400;
+    color: #93D1F2;
+  }
+
+  /* Caption */
+  .caption-bar {
+    background: #25303E;
+    border-radius: 0 0 12px 12px;
+    padding: 8px 14px;
+    font-size: 10px;
+    font-weight: 400;
+    color: #93D1F2;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Bee -->
+  <div style="display:flex; justify-content:center; margin-bottom:12px;">
+    <img src="../../../assets/characters/HNY_Academy-Small_Bee.png"
+         alt="Bee" style="width:56px; height:56px; object-fit:contain;">
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <span class="tag">Observability</span>
+      <div class="headline">Trace Waterfall</div>
+      <div class="subhead">Distributed request trace · checkout-service · 2026-03-17 14:32:07 UTC</div>
+    </div>
+    <img class="header-asset"
+         src="../../../assets/icons/HNY_Academy-Trace_Waterfall.png"
+         alt="Trace Waterfall">
+  </div>
+
+  <!-- Waterfall card -->
+  <div class="waterfall-card">
+
+    <!-- Column headers + ruler -->
+    <div class="col-headers">
+      <div class="col-label">Span</div>
+      <div class="col-label right">
+        <div class="timeline-ruler" style="flex:1;">
+          <span class="ruler-tick">0 ms</span>
+          <span class="ruler-tick">50 ms</span>
+          <span class="ruler-tick">100 ms</span>
+          <span class="ruler-tick">150 ms</span>
+          <span class="ruler-tick">212 ms</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spans -->
+    <div class="spans">
+
+      <!-- Root span -->
+      <div class="span-row">
+        <div class="span-label">
+          <div class="expand-dot" style="background:#FFB000;"></div>
+          <span class="span-name">POST /checkout</span>
+          <span class="status-badge status-slow">212ms</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#0278CD; left:0%; width:100%; animation-delay:0s;">
+            <span class="bar-label">checkout-service</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="span-divider">
+
+      <!-- Auth span -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:20px;"></span>
+          <div class="expand-dot"></div>
+          <span class="span-name">validateToken</span>
+          <span class="status-badge status-ok">OK</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#0298EC; left:0%; width:12%; animation-delay:0.15s;">
+            <span class="bar-label">auth</span>
+          </div>
+          <span class="span-duration" style="right:-2px;">25ms</span>
+        </div>
+      </div>
+
+      <!-- Cart span -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:20px;"></span>
+          <div class="expand-dot"></div>
+          <span class="span-name">getCartItems</span>
+          <span class="status-badge status-ok">OK</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#0298EC; left:12%; width:18%; animation-delay:0.27s;">
+            <span class="bar-label">cart-service</span>
+          </div>
+          <span class="span-duration">38ms</span>
+        </div>
+      </div>
+
+      <!-- DB query under cart -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:40px;"></span>
+          <div class="expand-dot" style="background:#93D1F2; width:5px; height:5px;"></div>
+          <span class="span-name service">db.query · carts</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#01487B; border: 1.5px solid #0298EC; left:14%; width:13%; animation-delay:0.36s;">
+            <span class="bar-label" style="color:#93D1F2;">postgres</span>
+          </div>
+          <span class="span-duration">27ms</span>
+        </div>
+      </div>
+
+      <!-- Inventory span -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:20px;"></span>
+          <div class="expand-dot"></div>
+          <span class="span-name">checkInventory</span>
+          <span class="status-badge status-ok">OK</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#0298EC; left:30%; width:22%; animation-delay:0.52s;">
+            <span class="bar-label">inventory-svc</span>
+          </div>
+          <span class="span-duration">46ms</span>
+        </div>
+      </div>
+
+      <!-- Cache miss under inventory -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:40px;"></span>
+          <div class="expand-dot" style="background:#FFB000; width:5px; height:5px;"></div>
+          <span class="span-name service">cache.get · miss</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#5A3A00; border: 1.5px solid #FFB000; left:30%; width:4%; animation-delay:0.56s;">
+            <span class="bar-label" style="color:#FFB000;">redis</span>
+          </div>
+          <span class="span-duration" style="color:#FFB000;">9ms</span>
+        </div>
+      </div>
+
+      <!-- DB query under inventory -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:40px;"></span>
+          <div class="expand-dot" style="background:#93D1F2; width:5px; height:5px;"></div>
+          <span class="span-name service">db.query · inventory</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#01487B; border: 1.5px solid #0298EC; left:34%; width:16%; animation-delay:0.62s;">
+            <span class="bar-label" style="color:#93D1F2;">postgres</span>
+          </div>
+          <span class="span-duration">33ms</span>
+        </div>
+      </div>
+
+      <hr class="span-divider">
+
+      <!-- Payment span (slow) -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:20px;"></span>
+          <div class="expand-dot" style="background:#FFB000;"></div>
+          <span class="span-name">processPayment</span>
+          <span class="status-badge status-slow">slow</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#5A3A00; border: 1.5px solid #FFB000; left:52%; width:36%; animation-delay:0.78s;">
+            <span class="bar-label" style="color:#FFB000;">payment-svc</span>
+          </div>
+          <span class="span-duration" style="color:#FFB000;">76ms</span>
+        </div>
+      </div>
+
+      <!-- Stripe external -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:40px;"></span>
+          <div class="expand-dot" style="background:#FFB000; width:5px; height:5px;"></div>
+          <span class="span-name service">http.post · stripe.com</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#5A3A00; border: 1.5px solid #FFB000; left:54%; width:32%; animation-delay:0.88s;">
+            <span class="bar-label" style="color:#FFB000;">external</span>
+          </div>
+          <span class="span-duration" style="color:#FFB000;">68ms</span>
+        </div>
+      </div>
+
+      <hr class="span-divider">
+
+      <!-- Notification span -->
+      <div class="span-row">
+        <div class="span-label">
+          <span class="indent" style="width:20px;"></span>
+          <div class="expand-dot"></div>
+          <span class="span-name">sendConfirmation</span>
+          <span class="status-badge status-ok">OK</span>
+        </div>
+        <div class="bar-track">
+          <div class="span-bar" style="background:#0298EC; left:88%; width:10%; animation-delay:1.32s;">
+            <span class="bar-label">notify</span>
+          </div>
+          <span class="span-duration">21ms</span>
+        </div>
+      </div>
+
+    </div><!-- /spans -->
+
+    <div class="caption-bar">
+      Trace ID: 7f3a9c2e1b08d4f6 · 10 spans · 4 services · root duration 212 ms
+    </div>
+
+  </div><!-- /waterfall-card -->
+
+  <!-- Stats row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">Total Spans</span>
+      <span class="stat-value">10</span>
+      <span class="stat-sub">across 4 services</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Root Duration</span>
+      <span class="stat-value">212ms</span>
+      <span class="stat-sub">p95 baseline: 90ms</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Slowest Span</span>
+      <span class="stat-value">76ms</span>
+      <span class="stat-sub">processPayment</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Errors</span>
+      <span class="stat-value" style="color:#FF6B6B;">0</span>
+      <span class="stat-sub">1 cache miss</span>
+    </div>
+  </div>
+
+  <!-- Callout -->
+  <div class="summary-bar">
+    <img class="summary-icon"
+         src="../../../assets/icons/HNY_Academy-Magnifying_Glass.png"
+         alt="Investigate">
+    <div class="summary-text">
+      <strong>Latency bottleneck detected:</strong> The external <code>stripe.com</code> call inside <strong>processPayment</strong> accounts for 68 ms — 32% of total trace duration. Consider adding a timeout, retry budget, or async queue for non-blocking checkout completion.
+    </div>
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

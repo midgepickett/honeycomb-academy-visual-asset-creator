@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity 1.1 — The Blank Page Problem</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0278CD;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 24px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .comic-wrap {
+      background: #0278CD;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 880px;
+      width: 100%;
+    }
+
+    /* ── Header ── */
+    .comic-header {
+      margin-bottom: 28px;
+    }
+    .tag {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: #FFB000;
+      margin-bottom: 8px;
+    }
+    .comic-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 27px;
+      color: #FFFFFF;
+      line-height: 1.2;
+    }
+    .comic-subtitle {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #93D1F2;
+      margin-top: 7px;
+    }
+
+    /* ── Grid ── */
+    .comic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    /* ── Panel shell ── */
+    .panel {
+      background: #01487B;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-scene {
+      position: relative;
+      flex: 1;
+      min-height: 218px;
+      padding: 14px;
+      overflow: hidden;
+    }
+    .panel-number {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #FFB000;
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      z-index: 10;
+    }
+    .panel-caption {
+      background: #25303E;
+      padding: 9px 13px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      font-style: italic;
+      color: #93D1F2;
+      line-height: 1.5;
+    }
+
+    /* ── Characters ── */
+    .char {
+      position: absolute;
+      bottom: 0;
+    }
+    .char-56  { width: 56px; }
+    .char-48  { width: 48px; }
+    .char-36  { width: 36px; }
+    .char-inactive {
+      opacity: 0.42;
+      filter: brightness(0.5) saturate(0.3);
+    }
+
+    /* ── Shared nested card ── */
+    .nested-card {
+      background: #0160A4;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* ── Canvas UI ── */
+    .canvas-topbar {
+      background: #0160A4;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid rgba(2, 152, 236, 0.3);
+    }
+    .canvas-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 10px;
+      color: #93D1F2;
+    }
+    .canvas-body {
+      padding: 8px 10px 6px;
+    }
+    .canvas-empty-hint {
+      font-family: 'Roboto', sans-serif;
+      font-size: 9px;
+      color: rgba(147, 209, 242, 0.38);
+      font-style: italic;
+      text-align: center;
+      padding: 10px 0 8px;
+    }
+    .canvas-input-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 8px;
+      border-top: 1px solid rgba(2, 152, 236, 0.2);
+    }
+    .canvas-input {
+      flex: 1;
+      background: #01487B;
+      border: 1.5px solid #0298EC;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 9px;
+      color: #FFFFFF;
+    }
+    .canvas-input.empty {
+      color: rgba(147, 209, 242, 0.38);
+      font-style: italic;
+    }
+    .canvas-send {
+      background: #FFB000;
+      border-radius: 4px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .canvas-bubble-user {
+      background: #01487B;
+      border-radius: 6px 6px 6px 2px;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+    }
+    .canvas-bubble-user p {
+      font-family: 'Roboto', sans-serif;
+      font-size: 9px;
+      color: #FFFFFF;
+      line-height: 1.45;
+    }
+    .canvas-bubble-response {
+      background: rgba(2, 152, 236, 0.12);
+      border: 1px solid rgba(2, 152, 236, 0.25);
+      border-radius: 6px 6px 2px 6px;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+    }
+    .canvas-bubble-response p {
+      font-family: 'Roboto', sans-serif;
+      font-size: 9px;
+      color: #93D1F2;
+      line-height: 1.45;
+    }
+    .canvas-bubble-response p em {
+      color: #FFB000;
+      font-style: normal;
+    }
+    .loading-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 2px 0 4px;
+    }
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #FFB000;
+    }
+    .d1 { opacity: 0.9; }
+    .d2 { opacity: 0.55; }
+    .d3 { opacity: 0.25; }
+
+    /* ── Query builder ── */
+    .qb-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #93D1F2;
+      padding: 7px 10px 5px;
+      border-bottom: 1px solid rgba(2, 152, 236, 0.2);
+    }
+    .qb-body {
+      padding: 7px 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .qb-field {
+      background: #01487B;
+      border-radius: 5px;
+      height: 17px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+    .qb-field span {
+      font-family: 'Roboto', sans-serif;
+      font-size: 8px;
+      color: rgba(147, 209, 242, 0.3);
+      font-style: italic;
+    }
+    .qb-run {
+      background: rgba(255, 176, 0, 0.12);
+      border-radius: 4px;
+      height: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .qb-run span {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 176, 0, 0.35);
+    }
+
+    /* ── Footer ── */
+    .comic-footer {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .comic-footer img {
+      height: 18px;
+      opacity: 0.65;
+    }
+    .comic-footer span {
+      font-family: 'Roboto', sans-serif;
+      font-size: 10px;
+      color: rgba(147, 209, 242, 0.38);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+<div class="comic-wrap">
+
+  <!-- Header -->
+  <div class="comic-header">
+    <div class="tag">Activity 1.1</div>
+    <div class="comic-title">The Blank Page Problem</div>
+    <div class="comic-subtitle">When the graph shows something happened — but not what, or why.</div>
+  </div>
+
+  <!-- Grid -->
+  <div class="comic-grid">
+
+    <!-- ───────── PANEL 1: 2:47am ───────── -->
+    <div class="panel">
+      <div class="panel-scene">
+        <span class="panel-number">1</span>
+
+        <!-- Phone / page notification -->
+        <div class="nested-card" style="position:absolute; top:28px; left:50%; transform:translateX(-50%); width:80px; padding:10px 8px 8px; display:flex; flex-direction:column; align-items:center; gap:3px;">
+          <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:22px; color:#FFFFFF; line-height:1;">2:47</div>
+          <div style="font-family:'Roboto',sans-serif; font-size:8px; color:rgba(147,209,242,0.55);">am</div>
+          <div style="width:100%; height:1px; background:#0298EC; opacity:0.3; margin:3px 0;"></div>
+          <div style="background:#FFB000; border-radius:3px; padding:2px 7px; font-family:'Poppins',sans-serif; font-weight:600; font-size:9px; color:#25303E; text-transform:uppercase; letter-spacing:0.5px;">⚠ page</div>
+          <div style="font-family:'Roboto',sans-serif; font-size:8px; color:rgba(147,209,242,0.55); text-align:center; margin-top:3px; line-height:1.4;">payment-service<br>error rate elevated</div>
+        </div>
+
+        <!-- Person 04 — alert, on-call -->
+        <img class="char char-48"
+          src="../../../assets/characters/HNY_Academy-Person_04.png"
+          alt="On-call engineer woken by page"
+          style="left:50%; transform:translateX(-50%);">
+
+        <!-- Small bee — ambient quiet -->
+        <img class="char char-36"
+          src="../../../assets/characters/HNY_Academy-Small_Bee.png"
+          alt=""
+          style="right:8px; bottom:4px; opacity:0.45;">
+      </div>
+      <div class="panel-caption">2:47 am. A page pulls them out of sleep.</div>
+    </div>
+
+    <!-- ───────── PANEL 2: Spike, no context ───────── -->
+    <div class="panel">
+      <div class="panel-scene">
+        <span class="panel-number">2</span>
+
+        <!-- Chart mockup -->
+        <div class="nested-card" style="position:absolute; top:28px; left:12px; right:12px; padding:8px 10px 10px;">
+          <div style="font-family:'Poppins',sans-serif; font-weight:600; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:#93D1F2; margin-bottom:7px;">error rate — payment-svc</div>
+          <svg viewBox="0 0 200 56" width="100%" style="display:block;">
+            <!-- Grid lines -->
+            <line x1="0" y1="46" x2="200" y2="46" stroke="#0298EC" stroke-width="0.5" stroke-opacity="0.25"/>
+            <line x1="0" y1="32" x2="200" y2="32" stroke="#0298EC" stroke-width="0.5" stroke-opacity="0.25"/>
+            <line x1="0" y1="18" x2="200" y2="18" stroke="#0298EC" stroke-width="0.5" stroke-opacity="0.25"/>
+            <!-- Flat baseline -->
+            <polyline
+              points="0,44 25,43 50,44 75,43 100,44 120,43 138,44"
+              fill="none" stroke="#93D1F2" stroke-width="1.5" stroke-opacity="0.5"/>
+            <!-- Spike -->
+            <polygon
+              points="138,46 138,44 150,40 162,14 170,7 177,4 183,9 189,16 196,22 200,26 200,46"
+              fill="#FFB000" fill-opacity="0.1"/>
+            <polyline
+              points="138,44 150,40 162,14 170,7 177,4 183,9 189,16 196,22 200,26"
+              fill="none" stroke="#FFB000" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+          <!-- No context notice -->
+          <div style="display:flex; align-items:center; gap:5px; margin-top:6px; background:rgba(255,176,0,0.07); border-radius:4px; padding:4px 6px;">
+            <div style="width:4px;height:4px;border-radius:50%;background:#FFB000;flex-shrink:0;"></div>
+            <span style="font-family:'Roboto',sans-serif;font-size:8px;color:rgba(147,209,242,0.45);">No additional context available</span>
+          </div>
+        </div>
+
+        <!-- Person 04 -->
+        <img class="char char-48"
+          src="../../../assets/characters/HNY_Academy-Person_04.png"
+          alt="Engineer staring at spike"
+          style="left:50%; transform:translateX(-50%);">
+      </div>
+      <div class="panel-caption">The graph shows a spike. That's all it shows.</div>
+    </div>
+
+    <!-- ───────── PANEL 3: Blank query builder ───────── -->
+    <div class="panel">
+      <div class="panel-scene">
+        <span class="panel-number">3</span>
+
+        <!-- Query builder -->
+        <div class="nested-card" style="position:absolute; top:28px; left:12px; right:12px;">
+          <div class="qb-title">Query Builder</div>
+          <div class="qb-body">
+            <div class="qb-field"><span>Select dataset…</span></div>
+            <div class="qb-field"><span>Add filter…</span></div>
+            <div class="qb-field"><span>Visualize…</span></div>
+            <div class="qb-field"><span>Group by…</span></div>
+            <div class="qb-run"><span>Run Query</span></div>
+          </div>
+        </div>
+
+        <!-- Person 04 — inactive, stuck -->
+        <img class="char char-48 char-inactive"
+          src="../../../assets/characters/HNY_Academy-Person_04.png"
+          alt="Engineer frozen at empty query builder"
+          style="left:50%; transform:translateX(-50%);">
+      </div>
+      <div class="panel-caption">An empty query builder. Every field a question mark.</div>
+    </div>
+
+    <!-- ───────── PANEL 4: Opening Canvas ───────── -->
+    <div class="panel">
+      <div class="panel-scene">
+        <span class="panel-number">4</span>
+
+        <!-- Canvas UI — just opened, empty -->
+        <div class="nested-card" style="position:absolute; top:28px; left:12px; right:12px;">
+          <div class="canvas-topbar">
+            <svg viewBox="0 0 14 14" width="14" height="14">
+              <polygon points="7,1 12,4 12,10 7,13 2,10 2,4" fill="#FFB000"/>
+            </svg>
+            <span class="canvas-label">Canvas</span>
+          </div>
+          <div class="canvas-body">
+            <div class="canvas-empty-hint">Ask a question about your data…</div>
+          </div>
+          <div class="canvas-input-row">
+            <div class="canvas-input empty">Type a question…</div>
+            <div class="canvas-send">
+              <svg viewBox="0 0 10 10" width="10" height="10">
+                <polygon points="2,1 9,5 2,9 3.5,5" fill="#25303E"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Person 04 — upright, deciding -->
+        <img class="char char-48"
+          src="../../../assets/characters/HNY_Academy-Person_04.png"
+          alt="Engineer opening Canvas"
+          style="left:50%; transform:translateX(-50%);">
+      </div>
+      <div class="panel-caption">They close the query builder. Open Canvas instead.</div>
+    </div>
+
+    <!-- ───────── PANEL 5: Typing the question ───────── -->
+    <div class="panel">
+      <div class="panel-scene">
+        <span class="panel-number">5</span>
+
+        <!-- Canvas UI — question typed, waiting -->
+        <div class="nested-card" style="position:absolute; top:28px; left:12px; right:12px;">
+          <div class="canvas-topbar">
+            <svg viewBox="0 0 14 14" width="14" height="14">
+              <polygon points="7,1 12,4 12,10 7,13 2,10 2,4" fill="#FFB000"/>
+            </svg>
+            <span class="canvas-label">Canvas</span>
+          </div>
+          <div class="canvas-body">
+            <div class="canvas-bubble-user">
+              <p>Why are requests to the payment service failing?</p>
+            </div>
+            <div class="loading-dots">
+              <div class="dot d1"></div>
+              <div class="dot d2"></div>
+              <div class="dot d3"></div>
+            </div>
+          </div>
+          <div class="canvas-input-row" style="opacity:0.35; pointer-events:none;">
+            <div class="canvas-input empty">Ask a follow-up…</div>
+            <div class="canvas-send">
+              <svg viewBox="0 0 10 10" width="10" height="10">
+                <polygon points="2,1 9,5 2,9 3.5,5" fill="#25303E"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Person 04 — leaning in -->
+        <img class="char char-48"
+          src="../../../assets/characters/HNY_Academy-Person_04.png"
+          alt="Engineer submitting question to Canvas"
+          style="left:50%; transform:translateX(-50%);">
+      </div>
+      <div class="panel-caption">"Why are requests to the payment service failing?"</div>
+    </div>
+
+    <!-- ───────── PANEL 6: Investigation begins ───────── -->
+    <div class="panel">
+      <div class="panel-scene">
+        <span class="panel-number">6</span>
+
+        <!-- Canvas UI — first response appearing -->
+        <div class="nested-card" style="position:absolute; top:28px; left:12px; right:12px;">
+          <div class="canvas-topbar">
+            <svg viewBox="0 0 14 14" width="14" height="14">
+              <polygon points="7,1 12,4 12,10 7,13 2,10 2,4" fill="#FFB000"/>
+            </svg>
+            <span class="canvas-label">Canvas</span>
+          </div>
+          <div class="canvas-body">
+            <div class="canvas-bubble-user" style="opacity:0.55; margin-bottom:6px;">
+              <p style="font-size:8px;">Why are requests to the payment service failing?</p>
+            </div>
+            <div class="canvas-bubble-response">
+              <p>Elevated error rates in <em>payment-svc</em> started at 02:31 UTC. Pulling traces now…</p>
+            </div>
+          </div>
+          <div class="canvas-input-row" style="opacity:0.45;">
+            <div class="canvas-input empty">Ask a follow-up…</div>
+            <div class="canvas-send">
+              <svg viewBox="0 0 10 10" width="10" height="10">
+                <polygon points="2,1 9,5 2,9 3.5,5" fill="#25303E"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Person 02 — focused, analytical (shift in energy) -->
+        <img class="char char-56"
+          src="../../../assets/characters/HNY_Academy-Person_02.png"
+          alt="Engineer now focused and investigating"
+          style="left:10px;">
+
+        <!-- Trace waterfall icon — ambient result -->
+        <img
+          src="../../../assets/icons/HNY_Academy-Trace_Waterfall.png"
+          alt=""
+          style="position:absolute; bottom:6px; right:12px; width:34px; opacity:0.7;">
+      </div>
+      <div class="panel-caption">The investigation begins.</div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- Footer -->
+  <div class="comic-footer">
+    <img
+      src="../../../assets/brand/HNY_ACDMY-Logo-Light-Small-NoPadding.png"
+      alt="Honeycomb Academy">
+    <span>Activity 1.1 — Observability Foundations</span>
+  </div>
+
+</div>
+</body>
+</html>
